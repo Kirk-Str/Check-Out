@@ -3,7 +3,6 @@ package com.kat.checkout.features.main;
 import android.os.Bundle;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.GridLayoutManager;
-import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
@@ -39,7 +38,7 @@ public class MainActivity extends BaseActivity implements MainMvpView, ErrorView
     ProgressBar progressBar;
 
     @BindView(R.id.recycler_pos_lines)
-    RecyclerView pokemonRecycler;
+    RecyclerView itemsRecycler;
 
     @BindView(R.id.swipe_to_refresh)
     SwipeRefreshLayout swipeRefreshLayout;
@@ -57,8 +56,8 @@ public class MainActivity extends BaseActivity implements MainMvpView, ErrorView
         swipeRefreshLayout.setColorSchemeResources(R.color.white);
         swipeRefreshLayout.setOnRefreshListener(() -> mainPresenter.getPokemon(POKEMON_COUNT));
 
-        pokemonRecycler.setLayoutManager(new GridLayoutManager(this, 2));
-        pokemonRecycler.setAdapter(pokemonAdapter);
+        itemsRecycler.setLayoutManager(new GridLayoutManager(this, 3));
+        itemsRecycler.setAdapter(pokemonAdapter);
         pokemonClicked();
         errorView.setErrorListener(this);
 
@@ -106,20 +105,20 @@ public class MainActivity extends BaseActivity implements MainMvpView, ErrorView
     @Override
     public void showPokemon(List<String> pokemon) {
         pokemonAdapter.setPokemon(pokemon);
-        pokemonRecycler.setVisibility(View.VISIBLE);
+        itemsRecycler.setVisibility(View.VISIBLE);
         swipeRefreshLayout.setVisibility(View.VISIBLE);
     }
 
     @Override
     public void showProgress(boolean show) {
         if (show) {
-            if (pokemonRecycler.getVisibility() == View.VISIBLE
+            if (itemsRecycler.getVisibility() == View.VISIBLE
                     && pokemonAdapter.getItemCount() > 0) {
                 swipeRefreshLayout.setRefreshing(true);
             } else {
                 progressBar.setVisibility(View.VISIBLE);
 
-                pokemonRecycler.setVisibility(View.GONE);
+                itemsRecycler.setVisibility(View.GONE);
                 swipeRefreshLayout.setVisibility(View.GONE);
             }
 
@@ -132,7 +131,7 @@ public class MainActivity extends BaseActivity implements MainMvpView, ErrorView
 
     @Override
     public void showError(Throwable error) {
-        pokemonRecycler.setVisibility(View.GONE);
+        itemsRecycler.setVisibility(View.GONE);
         swipeRefreshLayout.setVisibility(View.GONE);
         errorView.setVisibility(View.VISIBLE);
         Timber.e(error, "There was an error retrieving the pokemon");

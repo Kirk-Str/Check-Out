@@ -4,6 +4,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import java.util.Collections;
@@ -59,8 +60,11 @@ public class PokemonAdapter extends RecyclerView.Adapter<PokemonAdapter.PokemonV
 
     class PokemonViewHolder extends RecyclerView.ViewHolder {
 
-        @BindView(R.id.card_template_item_name)
+        @BindView(R.id.card_template_item_title)
         TextView itemName;
+
+        @BindView(R.id.card_template_item_image)
+        ImageView itemImage;
 
         private String pokemon;
 
@@ -75,6 +79,8 @@ public class PokemonAdapter extends RecyclerView.Adapter<PokemonAdapter.PokemonV
             itemName.setText(
                     String.format(
                             "%s%s", pokemon.substring(0, 1).toUpperCase(), pokemon.substring(1)));
+
+            itemImage.setImageResource();
         }
     }
 }
